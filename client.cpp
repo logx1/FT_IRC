@@ -100,6 +100,28 @@ bool client::set_authenticated()
                 {
                     std::string username = lines[i].substr(5, lines[i].size());
                     this->set_username(username);
+
+
+                    // try to grt the hodt name { this->username = user_abdel-ou user_abdel-ou localhost :realname} try to get the host name
+
+                    size_t found1 = this->username.find(" ");
+                    if (found1 != std::string::npos) {
+                        size_t found2 = this->username.find(" ", found1 + 1);
+                        if (found2 != std::string::npos) {
+                     
+                            std::string tmp_realname = this->username.substr(found2 + 1, this->username.size());
+
+                            size_t found3 = tmp_realname.find(" ");
+                            if (found3 != std::string::npos) {
+                                std::string realname = tmp_realname.substr(0, found3);
+                                // std::cout << "realname : " << realname << std::endl;
+                                this->hostname = realname;
+
+                                // std::cout << get_host_name() << std::endl;
+                            }
+                        }
+                    }
+                    
                 }
 
                 if (lines[i].find("PASS") != std::string::npos)
@@ -188,3 +210,8 @@ void client::set_massage(std::string massage)
 
 std::vector<pollfd>& client::get_fds() { return fds; }
 std::vector<client>& client::get_clients() { return clients; }
+
+std::string client::get_host_name()
+{
+    return this->hostname;
+}

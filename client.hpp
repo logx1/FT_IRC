@@ -12,6 +12,7 @@ class client
         pollfd client_pfd;
         std::string nickname;
         std::string username;
+        std::string hostname;
         std::string realname;
         std::string password;
         std::string sabmit_password;
@@ -45,6 +46,8 @@ class client
         static std::vector<pollfd>& get_fds();
         static std::vector<client>& get_clients();
         
+        std::string get_host_name();
+
 };
 
 std::vector<std::string> buffer_to_line(std::string buffer);
