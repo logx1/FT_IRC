@@ -81,7 +81,6 @@ bool client::set_authenticated()
         return (true);
     }else
     { 
-        
         std::vector<std::string> lines = buffer_to_line(this->massage, "\r\n");
 
         
@@ -105,25 +104,17 @@ bool client::set_authenticated()
 
                 if (lines[i].find("PASS") != std::string::npos)
                 {
-                    std::string password = lines[i].substr(5, lines[i].size());
-                    this->sabmit_password = password;
-                    if (this->password == password)
-                    {
-                        this->is_authenticated = true;
-                        this->password = "";
-                    }
+                    this->sabmit_password = lines[i].substr(5, lines[i].size());
+                    
                 }
 
                 
         }
-                if (this->nickname.size() > 0 && this->username.size() > 0)
+                if ((this->nickname.size() > 0) && (this->username.size() > 0) && (this->password == this->sabmit_password))
                 {
                     this->is_authenticated = true;
                     return (true);
                 }
-        // print_client();
-
-        // std::cout << "---------------  not authonticatef  --------------------" << std::endl;
 
 
 

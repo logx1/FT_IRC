@@ -44,8 +44,7 @@ class client
         void clear_massage();
         static std::vector<pollfd>& get_fds();
         static std::vector<client>& get_clients();
-
-
+        
 };
 
 std::vector<std::string> buffer_to_line(std::string buffer);
