@@ -1,4 +1,5 @@
 #include "server.hpp"
+#include "utils.hpp"
 
 Server::Server(std::string ip, std::string port)
 {
@@ -69,4 +70,42 @@ int Server::get_sockfd()
 std::vector<pollfd> Server::get_fds()
 {
     return this->fds;
+}
+
+std::string Server::getClientNickname(int fd) {
+    std::vector<client>& clients = client::get_clients();
+    std::vector<client>::iterator it = std::find_if(clients.begin(), clients.end(), IsClientWithFd(fd));
+    return (it != clients.end()) ? it->getNickname() : "Unknown";
+}
+
+std::string Server::getClientMessage(int fd) {
+    std::vector<client>& clients = client::get_clients();
+    std::vector<client>::iterator it = std::find_if(clients.begin(), clients.end(), IsClientWithFd(fd));
+    return (it != clients.end()) ? it->get_message() : "";
+}
+
+std::string Server::getClientHostName(int fd) {
+    std::vector<client>& clients = client::get_clients();
+    std::vector<client>::iterator it = std::find_if(clients.begin(), clients.end(), IsClientWithFd(fd));
+    return (it != clients.end()) ? it->get_host_name() : "";
+}
+
+std::string Server::getNameId(int fd) {
+    std::vector<client>& clients = client::get_clients();
+    for (std::vector<client>::iterator it = clients.begin(); it != clients.end(); ++it) {
+        if (it->get_client_pfd().fd == fd) {
+            return it->getNickname();
+        }
+    }
+    return "ERROR"; 
+}
+
+int Server::getClientFdByNickname(const std::string& nickname) {
+    std::vector<client>& clients = client::get_clients();
+    for (std::vector<client>::iterator it = clients.begin(); it != clients.end(); ++it) {
+        if (it->getNickname() == nickname) {
+            return it->get_client_pfd().fd;
+        }
+    }
+    return -1;  // Return -1 if no client with the given nickname is found
 }
