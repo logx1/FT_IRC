@@ -72,3 +72,6 @@ To register with the server, the client must send the following commands:
     ```
 
 After sending these commands, the client should be registered on the server.
+
+---
+*Last Updated: August 16, 2025*
